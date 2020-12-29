@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MVVM_test_application</string>
+    <string name="main_screen">Главный экран</string>
+    <string name="scotch">Виски</string>
+    <string name="vodka">Водка</string>
+    <string name="champagne">Шампанское</string>
+</resources>

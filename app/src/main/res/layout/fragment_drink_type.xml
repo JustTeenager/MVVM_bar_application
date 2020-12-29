@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+    <variable
+        name="viewModel"
+        type="com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel" />
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:gravity="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_screen"
+        android:textSize="54sp"
+        android:textAlignment="center"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/scotch_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scotch"
+        android:layout_gravity="center"
+        android:layout_marginTop="72dp"
+        android:onClick="@{()-> viewModel.onScotchClick()}"/>
+    <Button
+        android:id="@+id/vodka_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vodka"
+        android:layout_gravity="center"
+        android:layout_marginTop="72dp"
+        android:onClick="@{()-> viewModel.onVodkaClick()}"/>
+    <Button
+        android:id="@+id/champagne_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/champagne"
+        android:layout_gravity="center"
+        android:layout_marginTop="72dp"
+        android:padding="4dp"
+        android:onClick="@{()->viewModel.onChampagneClick()}"/>
+
+</LinearLayout>
+</layout>
