@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mvvm_test_application.viewmodel.CocktailItemViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        android:onClick="@{()->viewModel.onCockTailClicked()}"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@{viewModel.getCockTailName()}"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/alcoholable_text"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@{viewModel.getCocktailAlcoholable()}"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:id="@+id/structure_text"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@{viewModel.getCockTailStructure(context,viewModel.cocktail.structure)}"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/hasIce_text"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@{viewModel.isHasIce(context,viewModel.cocktail.hasIce)}"
+            android:textStyle="italic"/>
+
+</LinearLayout>
+</layout>

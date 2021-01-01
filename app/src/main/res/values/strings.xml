@@ -4,4 +4,7 @@
     <string name="scotch">Виски</string>
     <string name="vodka">Водка</string>
     <string name="champagne">Шампанское</string>
+    <string name="without_ice">Без льда</string>
+    <string name="with_ice">Со льдом</string>
+    <string name="structure_title">Состав: </string>
 </resources>

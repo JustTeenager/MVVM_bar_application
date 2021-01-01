@@ -13,8 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentCocktailListBinding;
+import com.example.mvvm_test_application.model.Cocktail;
 import com.example.mvvm_test_application.model.CocktailAdapter;
 import com.example.mvvm_test_application.viewmodel.CocktailListViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CocktailListFragment extends Fragment {
 
@@ -33,10 +37,18 @@ public class CocktailListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentCocktailListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_list,container,false);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.recyclerView.setAdapter(new CocktailAdapter(null));
+        List<Cocktail> list = generateCocktailList();
+        binding.recyclerView.setAdapter(new CocktailAdapter(list,getActivity()));
         binding.setViewModel(new CocktailListViewModel());
         binding.getViewModel().setTitle(setUpCocktailName());
         return binding.getRoot();
+    }
+
+    //TODO фильтровать коктейли
+    private List<Cocktail> generateCocktailList() {
+        List<Cocktail> list=new ArrayList<>();
+        list.add(new Cocktail("Blood Mary",40,"Водка и томатный сок",true,"vodka"));
+        return list;
     }
 
     private String setUpCocktailName(){
