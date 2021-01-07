@@ -7,4 +7,5 @@
     <string name="without_ice">Без льда</string>
     <string name="with_ice">Со льдом</string>
     <string name="structure_title">Состав: </string>
+    <string name="open_website">Open website</string>
 </resources>

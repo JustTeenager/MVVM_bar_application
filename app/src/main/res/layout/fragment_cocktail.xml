@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
-            name="activity"
-            type="com.example.mvvm_test_application.view.MainActivity"/>
-        <variable
             name="viewModel"
-            type="com.example.mvvm_test_application.viewmodel.CocktailItemViewModel" />
+            type="com.example.mvvm_test_application.viewmodel.CocktailViewModel" />
     </data>
 
 
     <LinearLayout
-        android:id="@+id/item_click"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_height="match_parent"
+        android:padding="16dp"
         android:gravity="center"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/photo_cocktail"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="32dp"/>
 
         <TextView
             android:id="@+id/name_text"
@@ -56,5 +58,13 @@
             android:text="@{viewModel.isHasIce(context,viewModel.cocktail.hasIce)}"
             android:textStyle="italic"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/go_to_web_view_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/open_website"
+            android:onClick="@{() -> viewModel.openWebSite()}"
+            android:layout_marginTop="32dp"/>
+    </LinearLayout>
 </layout>

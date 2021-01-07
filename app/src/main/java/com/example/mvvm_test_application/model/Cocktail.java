@@ -7,13 +7,17 @@ public class Cocktail {
     private String structure;
     private boolean hasIce;
     private String type;
+    private String urlSite;
+    private String urlImage;
 
-    public Cocktail(String name, int alchoholable, String structure, boolean hasIce,String type) {
+    public Cocktail(String name, int alchoholable, String structure, boolean hasIce,String type, String urlSite, String urlImage) {
         this.name = name;
         this.alchoholable = alchoholable;
         this.structure = structure;
         this.hasIce = hasIce;
         this.type=type;
+        this.urlSite =urlSite;
+        this.urlImage = urlImage;
     }
 
     public String getName() {
@@ -54,5 +58,21 @@ public class Cocktail {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getUrlSite() {
+        return urlSite;
+    }
+
+    public void setUrlSite(String urlSite) {
+        this.urlSite = urlSite;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

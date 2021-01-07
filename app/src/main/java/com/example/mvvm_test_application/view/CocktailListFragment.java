@@ -23,6 +23,7 @@ import java.util.List;
 public class CocktailListFragment extends Fragment {
 
     private static final String KEY_POSITION_TYPE_DRINK = "key_position_type_drink";
+    private int position;
 
     public static CocktailListFragment newInstance(int position){
         CocktailListFragment fragment = new CocktailListFragment();
@@ -36,6 +37,7 @@ public class CocktailListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentCocktailListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_list,container,false);
+        position = getArguments().getInt(KEY_POSITION_TYPE_DRINK);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<Cocktail> list = generateCocktailList();
         binding.recyclerView.setAdapter(new CocktailAdapter(list,getActivity()));
@@ -44,10 +46,20 @@ public class CocktailListFragment extends Fragment {
         return binding.getRoot();
     }
 
-    //TODO фильтровать коктейли
+    //TODO фильтровать коктейли и поставить url
     private List<Cocktail> generateCocktailList() {
         List<Cocktail> list=new ArrayList<>();
-        list.add(new Cocktail("Blood Mary",40,"Водка и томатный сок",true,"vodka"));
+        if (position ==1)
+        list.add(new Cocktail("Blood Mary",40,"Водка и томатный сок",true,"vodka",
+                "https://ru.inshaker.com/cocktails/31-krovavaya-meri","https://www.edim.tv/img/large/bloody-mary.jpg"));
+        else if (position ==0){
+            list.add(new Cocktail("Виски с колой",15,"Виски и кола",true,"whiskey",
+                    "https://ru.inshaker.com/cocktails/31-krovavaya-meri","https://www.edim.tv/img/large/bloody-mary.jpg"));
+        }
+        else if (position==2){
+            list.add(new Cocktail("Маргарита",30,"много чего",true,"champagne",
+                    "https://ru.inshaker.com/cocktails/31-krovavaya-meri","https://www.edim.tv/img/large/bloody-mary.jpg"));
+        }
         return list;
     }
 

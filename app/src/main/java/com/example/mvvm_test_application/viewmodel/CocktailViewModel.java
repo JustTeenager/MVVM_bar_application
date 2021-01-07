@@ -1,27 +1,23 @@
 package com.example.mvvm_test_application.viewmodel;
 
-import android.app.Activity;
 import android.content.Context;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.model.Cocktail;
-import com.example.mvvm_test_application.view.MainActivity;
 
-public class CocktailItemViewModel extends BaseObservable{
-
+public class CocktailViewModel extends BaseObservable {
 
     private Cocktail mCocktail;
+    private Callback callback;
 
     public void setCocktail(Cocktail cocktail){
         this.mCocktail=cocktail;
     }
 
+    public void setCallback(Callback callback){ this.callback = callback;}
 
     @Bindable
     public Cocktail getCocktail() {
@@ -35,7 +31,7 @@ public class CocktailItemViewModel extends BaseObservable{
     }
 
 
-    public String getCockTailStructure(Context context,String structure){
+    public String getCockTailStructure(Context context, String structure){
         return context.getResources().getString(R.string.structure_title)+structure;
     }
 
@@ -44,12 +40,17 @@ public class CocktailItemViewModel extends BaseObservable{
         return mCocktail.getAlchoholable()+"%";
     }
 
-    public void onCockTailClicked(MainActivity activity){
-
-    }
-
     public String isHasIce(Context context,boolean isIce){
         return (isIce ? context.getResources().getString(R.string.with_ice):
                 context.getResources().getString(R.string.without_ice));
     }
+
+    public void openWebSite(){
+        callback.openWebSite(mCocktail.getUrlSite());
+    }
+
+    public interface Callback{
+        void openWebSite(String url);
+    }
+
 }

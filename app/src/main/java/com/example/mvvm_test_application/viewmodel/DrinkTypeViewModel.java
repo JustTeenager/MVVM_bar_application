@@ -1,6 +1,7 @@
 package com.example.mvvm_test_application.viewmodel;
 
 import androidx.databinding.BaseObservable;
+import androidx.lifecycle.ViewModel;
 
 public class DrinkTypeViewModel extends BaseObservable {
     private static final int CODE_SCOTCH = 0;

@@ -2,6 +2,7 @@ package com.example.mvvm_test_application.viewmodel;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.lifecycle.ViewModel;
 
 public class CocktailListViewModel extends BaseObservable {
     private String title;
@@ -13,6 +14,5 @@ public class CocktailListViewModel extends BaseObservable {
 
     public void setTitle(String title){
         this.title = title;
-        notifyChange();
     }
 }
