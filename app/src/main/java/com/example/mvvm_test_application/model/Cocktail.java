@@ -1,18 +1,28 @@
 package com.example.mvvm_test_application.model;
 
+
+import com.google.gson.annotations.SerializedName;
+
 public class Cocktail {
 
+    @SerializedName("name")
     private String name;
-    private int alchoholable;
+    @SerializedName("alcoholable")
+    private String alcoholable;
+    @SerializedName("structure")
     private String structure;
+    @SerializedName("hasIce")
     private boolean hasIce;
+    @SerializedName("type")
     private String type;
+    @SerializedName("urlSite")
     private String urlSite;
+    @SerializedName("urlImage")
     private String urlImage;
 
-    public Cocktail(String name, int alchoholable, String structure, boolean hasIce,String type, String urlSite, String urlImage) {
+    public Cocktail(String name, String alcoholable, String structure, boolean hasIce, String type, String urlSite, String urlImage) {
         this.name = name;
-        this.alchoholable = alchoholable;
+        this.alcoholable = alcoholable;
         this.structure = structure;
         this.hasIce = hasIce;
         this.type=type;
@@ -24,8 +34,8 @@ public class Cocktail {
         return name;
     }
 
-    public int getAlchoholable() {
-        return alchoholable;
+    public String getAlcoholable() {
+        return alcoholable;
     }
 
     public String getStructure() {
@@ -40,8 +50,8 @@ public class Cocktail {
         this.name = name;
     }
 
-    public void setAlchoholable(int alchoholable) {
-        this.alchoholable = alchoholable;
+    public void setAlcoholable(String alcoholable) {
+        this.alcoholable = alcoholable;
     }
 
     public void setStructure(String structure) {

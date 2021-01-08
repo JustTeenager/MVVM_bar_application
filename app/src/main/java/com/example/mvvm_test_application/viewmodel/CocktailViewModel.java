@@ -37,7 +37,7 @@ public class CocktailViewModel extends BaseObservable {
 
     @Bindable
     public String getCocktailAlcoholable() {
-        return mCocktail.getAlchoholable()+"%";
+        return mCocktail.getAlcoholable()+"%";
     }
 
     public String isHasIce(Context context,boolean isIce){

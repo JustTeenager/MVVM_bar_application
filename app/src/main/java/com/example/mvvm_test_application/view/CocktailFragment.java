@@ -1,6 +1,9 @@
 package com.example.mvvm_test_application.view;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +15,39 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.bumptech.glide.Glide;
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentCocktailBinding;
 import com.example.mvvm_test_application.model.Cocktail;
+import com.example.mvvm_test_application.utils.DownloaderService;
 import com.example.mvvm_test_application.viewmodel.CocktailViewModel;
 import com.example.mvvm_test_application.viewmodel.CocktailDataViewModel;
 
-public class CocktailFragment extends Fragment {
+import java.util.concurrent.ExecutionException;
+
+public class CocktailFragment extends Fragment implements DownloaderService.ImageGetting {
     private FragmentCocktailBinding binding;
+    private Callback mCallback;
+
+    @Override
+    public void getImage(final Drawable drawable) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                binding.photoCocktail.setImageDrawable(drawable);
+            }
+        });
+    }
+
+    public interface Callback{
+        DownloaderService getService();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mCallback= (Callback) context;
+
+    }
 
     @Nullable
     @Override
@@ -32,7 +59,14 @@ public class CocktailFragment extends Fragment {
             @Override
             public void onChanged(Cocktail cocktail) {
                 model.setCocktail(cocktail);
-                Glide.with(CocktailFragment.this).load(cocktail.getUrlImage()).into(binding.photoCocktail);
+                try {
+                    Log.d("loadImage","starting");
+                    Log.d("imgURL:",cocktail.getUrlImage());
+                    mCallback.getService().downloadImage(cocktail.getUrlImage(), (DownloaderService.UILoadingCommander) getActivity(),CocktailFragment.this);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //Glide.with(CocktailFragment.this).load(cocktail.getUrlImage()).into(binding.photoCocktail);
             }
         });
         model.setCallback((CocktailViewModel.Callback) getActivity());
@@ -40,6 +74,9 @@ public class CocktailFragment extends Fragment {
         return binding.getRoot();
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCallback = null;
+    }
 }

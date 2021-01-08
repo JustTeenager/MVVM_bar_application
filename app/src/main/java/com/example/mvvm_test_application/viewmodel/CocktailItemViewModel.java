@@ -1,13 +1,9 @@
 package com.example.mvvm_test_application.viewmodel;
 
-import android.app.Activity;
 import android.content.Context;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.model.Cocktail;
@@ -41,11 +37,7 @@ public class CocktailItemViewModel extends BaseObservable{
 
     @Bindable
     public String getCocktailAlcoholable() {
-        return mCocktail.getAlchoholable()+"%";
-    }
-
-    public void onCockTailClicked(MainActivity activity){
-
+        return mCocktail.getAlcoholable()+"%";
     }
 
     public String isHasIce(Context context,boolean isIce){

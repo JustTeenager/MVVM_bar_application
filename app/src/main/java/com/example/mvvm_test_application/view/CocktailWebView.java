@@ -18,7 +18,6 @@ import com.example.mvvm_test_application.databinding.FragmentCocktailWebViewBind
 
 public class CocktailWebView extends Fragment {
 
-    private WebView webView;
     private static final String KEY_URL = "key_url";
 
     @SuppressLint("SetJavaScriptEnabled")

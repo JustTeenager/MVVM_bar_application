@@ -10,15 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentCocktailListBinding;
-import com.example.mvvm_test_application.model.Cocktail;
 import com.example.mvvm_test_application.model.CocktailAdapter;
+import com.example.mvvm_test_application.utils.RetrofitSingleton;
 import com.example.mvvm_test_application.viewmodel.CocktailListViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CocktailListFragment extends Fragment {
 
@@ -39,28 +37,26 @@ public class CocktailListFragment extends Fragment {
         FragmentCocktailListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_list,container,false);
         position = getArguments().getInt(KEY_POSITION_TYPE_DRINK);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        List<Cocktail> list = generateCocktailList();
-        binding.recyclerView.setAdapter(new CocktailAdapter(list,getActivity()));
+        generateAndSetupCocktailAdapter(binding.recyclerView);
         binding.setViewModel(new CocktailListViewModel());
         binding.getViewModel().setTitle(setUpCocktailName());
         return binding.getRoot();
     }
 
-    //TODO фильтровать коктейли и поставить url
-    private List<Cocktail> generateCocktailList() {
-        List<Cocktail> list=new ArrayList<>();
-        if (position ==1)
-        list.add(new Cocktail("Blood Mary",40,"Водка и томатный сок",true,"vodka",
-                "https://ru.inshaker.com/cocktails/31-krovavaya-meri","https://www.edim.tv/img/large/bloody-mary.jpg"));
-        else if (position ==0){
-            list.add(new Cocktail("Виски с колой",15,"Виски и кола",true,"whiskey",
-                    "https://ru.inshaker.com/cocktails/31-krovavaya-meri","https://www.edim.tv/img/large/bloody-mary.jpg"));
+    private void generateAndSetupCocktailAdapter(final RecyclerView view) {
+        if (position ==0){
+            view.setAdapter(new CocktailAdapter(RetrofitSingleton.getCocktailsFilteredList("Виски"),getActivity()));
+           //Водка
         }
+        else if (position ==1) {
+            view.setAdapter(new CocktailAdapter(RetrofitSingleton.getCocktailsFilteredList("Водка"),getActivity()));
+           //Виски
+        }
+
         else if (position==2){
-            list.add(new Cocktail("Маргарита",30,"много чего",true,"champagne",
-                    "https://ru.inshaker.com/cocktails/31-krovavaya-meri","https://www.edim.tv/img/large/bloody-mary.jpg"));
+            view.setAdapter(new CocktailAdapter(RetrofitSingleton.getCocktailsFilteredList("Шампанское"),getActivity()));
+            //Шампанское
         }
-        return list;
     }
 
     private String setUpCocktailName(){
