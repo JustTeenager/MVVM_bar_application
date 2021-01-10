@@ -12,39 +12,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="4dp"
+    android:background="#3A3939"
     android:gravity="center">
+
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/main_screen"
-        android:textSize="54sp"
-        android:textAlignment="center"
-        android:layout_marginTop="16dp"/>
+        android:id="@+id/some_id"
+        android:layout_width="297dp"
+        android:layout_height="120dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="61dp"
+        android:gravity="center_horizontal|top"
+        android:text="@string/some_id"
+        android:textColor="@android:color/white"
+        android:textAppearance="@style/some_id" />
 
     <Button
         android:id="@+id/scotch_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/scotch"
-        android:layout_gravity="center"
-        android:layout_marginTop="72dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/whiskey"
+        android:elevation="4dp"
         android:onClick="@{()-> viewModel.onScotchClick()}"/>
     <Button
         android:id="@+id/vodka_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/vodka"
-        android:layout_gravity="center"
-        android:layout_marginTop="72dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/vodka"
+        android:elevation="4dp"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
         android:onClick="@{()-> viewModel.onVodkaClick()}"/>
     <Button
         android:id="@+id/champagne_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/champagne"
         android:layout_gravity="center"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="40dp"
         android:padding="4dp"
+        android:background="@drawable/champagne"
         android:onClick="@{()->viewModel.onChampagneClick()}"/>
 
 </LinearLayout>

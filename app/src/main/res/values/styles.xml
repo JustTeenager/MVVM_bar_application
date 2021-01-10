@@ -1,9 +1,9 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/MainButtonStyle</item>
         <item name="android:textColor">@android:color/black</item>
@@ -12,6 +12,20 @@
     <style name="MainButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/button_background</item>
+    </style>
+    <style name="some_id">
+        <item name="android:textSize">48sp
+        </item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:shadowColor">#40000000
+        </item>
+        <item name="android:shadowDx">0
+
+        </item>
+        <item name="android:shadowDy">4
+        </item>
+        <item name="android:shadowRadius">4
+        </item>
     </style>
 
 </resources>
