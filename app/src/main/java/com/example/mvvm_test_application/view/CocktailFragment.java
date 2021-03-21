@@ -24,9 +24,19 @@ import com.example.mvvm_test_application.viewmodel.CocktailDataViewModel;
 
 import java.util.concurrent.ExecutionException;
 
+import javax.inject.Inject;
+
+import dagger.android.DaggerService;
+
 public class CocktailFragment extends Fragment implements DownloaderService.ImageGetting {
+
+    @Inject
     private FragmentCocktailBinding binding;
-    private Callback mCallback;
+    @Inject
+    private Callback callback;
+
+    @Inject
+    private CocktailViewModel cocktailModel;
 
     @Override
     public void getImage(final Drawable drawable) {
@@ -39,44 +49,42 @@ public class CocktailFragment extends Fragment implements DownloaderService.Imag
     }
 
     public interface Callback{
-        DownloaderService getService();
+        DownloaderService getDownloaderService();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mCallback= (Callback) context;
+        callback = (Callback) context;
 
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail, container, false);
-        final CocktailViewModel model = new CocktailViewModel();
+       // binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail, container, false);
+        //final CocktailViewModel model = new CocktailViewModel();
+        //DaggerCocktailFragmentComponent.builder.ContextAndCallbacksModule(getActivity()).build().inject(this);
         CocktailDataViewModel controller = ViewModelProviders.of(getActivity()).get(CocktailDataViewModel.class);
         controller.getLiveData().observe(this, new Observer<Cocktail>() {
             @Override
             public void onChanged(Cocktail cocktail) {
-                model.setCocktail(cocktail);
+                cocktailModel.setCocktail(cocktail);
                 try {
-                    Log.d("loadImage","starting");
-                    Log.d("imgURL:",cocktail.getUrlImage());
-                    mCallback.getService().downloadImage(cocktail.getUrlImage(), (DownloaderService.UILoadingCommander) getActivity(),CocktailFragment.this);
-                } catch (ExecutionException | InterruptedException e) {
+                    callback.getDownloaderService().downloadImage(cocktail.getUrlImage(), (DownloaderService.UILoadingCommander) getActivity(),CocktailFragment.this);
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 //Glide.with(CocktailFragment.this).load(cocktail.getUrlImage()).into(binding.photoCocktail);
             }
         });
-        model.setCallback((CocktailViewModel.Callback) getActivity());
-        binding.setViewModel(model);
+        binding.setViewModel(cocktailModel);
         return binding.getRoot();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCallback = null;
+        callback = null;
     }
 }

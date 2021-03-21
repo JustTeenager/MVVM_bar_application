@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.IBinder;
-
 import androidx.annotation.Nullable;
-
 import com.bumptech.glide.Glide;
 import com.example.mvvm_test_application.model.Cocktail;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +18,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
+import javax.inject.Inject;
+
 public class DownloaderService extends Service {
+
+    @Inject
      private  ExecutorService mService;
+    @Inject
+     private RetrofitSingleton retrofitSingleton;
 
     public class DownloadBinder extends Binder{
         private final DownloaderService service;
@@ -35,14 +38,6 @@ public class DownloaderService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mService=Executors.newCachedThreadPool(new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread thread=new Thread(r);
-                thread.setPriority(4);
-                return thread;
-            }
-        });
     }
 
     public interface UILoadingCommander {
@@ -76,7 +71,7 @@ public class DownloaderService extends Service {
                     @Override
                     public List<Cocktail> call() {
                         try {
-                            List<Cocktail> list=RetrofitSingleton.newInstance().getCocktailsApi().getCocktails().execute().body();
+                            List<Cocktail> list=retrofitSingleton.getCocktailsApi().getCocktails().execute().body();
                             commander.dismissDialog();
                             return list;
                         } catch (IOException e) {
@@ -96,7 +91,7 @@ public class DownloaderService extends Service {
         }).start();
     }
 
-    public void downloadImage(final String url, final UILoadingCommander commander, final ImageGetting getting) throws ExecutionException, InterruptedException {
+    public void downloadImage(final String url, final UILoadingCommander commander, final ImageGetting getting) throws InterruptedException {
         new Thread(new Runnable() {
             @Override
             public void run() {

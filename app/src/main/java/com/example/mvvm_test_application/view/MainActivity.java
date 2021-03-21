@@ -18,46 +18,25 @@ import com.example.mvvm_test_application.utils.DownloaderService;
 import com.example.mvvm_test_application.viewmodel.CocktailViewModel;
 import com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity implements DrinkTypeViewModel.Callback, CocktailViewModel.Callback, CocktailAdapter.Callback,CocktailFragment.Callback, DownloaderService.UILoadingCommander {
 
-    private final ServiceConnection mConnection=new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mService=((DownloaderService.DownloadBinder) service).getService();
-            try {
-                mService.downloadAllCocktails(MainActivity.this);
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                if (fragment == null){
-                    fragment = createFragment();
-                    getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fragment).commit();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
+    @Inject
+    private DownloaderService downloaderService;
+    @Inject
+    private ProgressDialog progressDialog;
 
-        }
-    };
-
-    private DownloaderService mService;
-    private ProgressDialog mDialog;
+    @Inject
+    private ServiceConnection connection;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
-        mDialog=new ProgressDialog(this);
-        mDialog.setTitle(getString(R.string.loading_title));
-        mDialog.setCancelable(false);
-        bindService(new Intent(this,DownloaderService.class),mConnection,BIND_AUTO_CREATE);
-    }
-
-    public Fragment createFragment(){
-        return DrinkTypeFragment.newInstance();
+        bindService(new Intent(this,DownloaderService.class),connection,BIND_AUTO_CREATE);
     }
 
     @Override
@@ -83,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements DrinkTypeViewMode
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mDialog.show();
+                progressDialog.show();
             }
         });
     }
@@ -93,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements DrinkTypeViewMode
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mDialog.dismiss();
+                progressDialog.dismiss();
             }
         });
     }
@@ -104,21 +83,21 @@ public class MainActivity extends AppCompatActivity implements DrinkTypeViewMode
         @Override
         public void run() {
             Toast.makeText(MainActivity.this, "Ошибка при загрузке,проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
-            mDialog.dismiss();
+            progressDialog.dismiss();
         }
     });
 
     }
 
     @Override
-    public DownloaderService getService() {
-        return mService;
+    public DownloaderService getDownloaderService() {
+        return downloaderService;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mConnection);
-        mService=null;
+        unbindService(connection);
+        downloaderService =null;
     }
 }

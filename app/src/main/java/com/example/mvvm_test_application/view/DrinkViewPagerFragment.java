@@ -16,8 +16,16 @@ import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentDrinkViewPagerBinding;
 import com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel;
 
+import javax.inject.Inject;
+
+
 public class DrinkViewPagerFragment extends Fragment {
     private static final String KEY_POSITION_TYPE_DRINK = "key_position_type_drink";
+
+    @Inject
+    private FragmentDrinkViewPagerBinding binding;
+    @Inject
+    private FragmentPagerAdapter adapter;
 
     public static DrinkViewPagerFragment newInstance(int position){
         DrinkViewPagerFragment drinkViewPagerFragment = new DrinkViewPagerFragment();
@@ -30,42 +38,14 @@ public class DrinkViewPagerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentDrinkViewPagerBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_drink_view_pager,container,false);
-        setUpViewPager(binding);
+        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_drink_view_pager,container,false);
+        setUpViewPager();
         return binding.getRoot();
     }
 
-    private void setUpViewPager(FragmentDrinkViewPagerBinding binding) {
+    private void setUpViewPager() {
         int position = getArguments().getInt(KEY_POSITION_TYPE_DRINK);
-        binding.drinkViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(),FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return CocktailListFragment.newInstance(position);
-            }
-
-            @Override
-            public int getCount() {
-                return 3;
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                switch (position){
-                    case 0:{
-                        return getActivity().getString(R.string.scotch);
-                    }
-                    case 1:{
-                        return getActivity().getString(R.string.vodka);
-                    }
-                    case 2:{
-                        return getActivity().getString(R.string.champagne);
-                    }
-                }
-                return super.getPageTitle(position);
-            }
-        });
+        binding.drinkViewPager.setAdapter(adapter);
         binding.drinkViewPager.setCurrentItem(position);
         binding.typeDrinkTabLayout.setupWithViewPager(binding.drinkViewPager);
     }

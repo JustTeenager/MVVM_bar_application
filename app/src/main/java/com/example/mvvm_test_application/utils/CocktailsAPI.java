@@ -15,8 +15,4 @@ public interface CocktailsAPI {
 
     @GET("/getCocktail.php")
     Call<List<Cocktail>> getCocktails();
-
-    @POST("/папка")
-    @FormUrlEncoded
-    void addCocktail(Cocktail cocktail);
 }

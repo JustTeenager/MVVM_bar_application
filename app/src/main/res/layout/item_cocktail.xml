@@ -25,6 +25,7 @@
             android:id="@+id/name_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
             android:textSize="25sp"
             android:text="@{viewModel.getCockTailName()}"
             android:textStyle="bold"/>
@@ -34,6 +35,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
             android:textSize="15sp"
             android:text="@{viewModel.getCocktailAlcoholable()}"
             android:textStyle="italic"/>
@@ -44,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:textColor="@android:color/white"
             android:text="@{viewModel.getCockTailStructure(context,viewModel.cocktail.structure)}"
             android:textStyle="normal"/>
 
@@ -53,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:textColor="@android:color/white"
             android:text="@{viewModel.isHasIce(context,viewModel.cocktail.hasIce)}"
             android:textStyle="italic"/>
 

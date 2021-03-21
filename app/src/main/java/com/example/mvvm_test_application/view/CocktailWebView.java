@@ -16,15 +16,20 @@ import androidx.fragment.app.Fragment;
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentCocktailWebViewBinding;
 
+import javax.inject.Inject;
+
 public class CocktailWebView extends Fragment {
 
     private static final String KEY_URL = "key_url";
+
+    @Inject
+    private FragmentCocktailWebViewBinding binding;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentCocktailWebViewBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_cocktail_web_view,container,false);
+       // binding = DataBindingUtil.inflate(inflater,R.layout.fragment_cocktail_web_view,container,false);
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.setWebViewClient(new WebViewClient());
         binding.webView.loadUrl(getArguments().getString(KEY_URL));
