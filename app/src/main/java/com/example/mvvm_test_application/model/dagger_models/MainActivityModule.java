@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -18,7 +19,7 @@ import dagger.Provides;
 @Module(includes = ContextAndCallbacksModule.class)
 public class MainActivityModule {
 
-    private DownloaderService downloaderService;
+    private DownloaderService downloaderService = new DownloaderService();
     private ProgressDialog dialog;
 
 
@@ -27,6 +28,7 @@ public class MainActivityModule {
         return new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d("tut_downloader", "tut");
                 downloaderService =((DownloaderService.DownloadBinder) service).getService();
                 try {
                     downloaderService.downloadAllCocktails((DownloaderService.UILoadingCommander) activity);
@@ -54,9 +56,9 @@ public class MainActivityModule {
 
     @Provides
     public ProgressDialog provideProgressDialog(FragmentActivity context){
-        ProgressDialog progressDialog =new ProgressDialog(context);
-        progressDialog.setTitle(context.getString(R.string.loading_title));
-        progressDialog.setCancelable(false);
-        return progressDialog;
+        dialog =new ProgressDialog(context);
+        dialog.setTitle(context.getString(R.string.loading_title));
+        dialog.setCancelable(false);
+        return dialog;
     }
 }

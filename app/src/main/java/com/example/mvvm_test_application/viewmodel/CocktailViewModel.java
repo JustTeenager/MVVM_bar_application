@@ -8,10 +8,18 @@ import androidx.databinding.Bindable;
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.model.Cocktail;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
+
 public class CocktailViewModel extends BaseObservable {
 
     private Cocktail mCocktail;
-    private Callback callback;
+    @Inject
+    Callback callback;
+
+    @Inject
+    public CocktailViewModel(){}
 
     public void setCocktail(Cocktail cocktail){
         this.mCocktail=cocktail;

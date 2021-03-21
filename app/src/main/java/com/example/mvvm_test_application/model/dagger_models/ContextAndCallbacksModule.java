@@ -1,13 +1,10 @@
 package com.example.mvvm_test_application.model.dagger_models;
 
-import android.content.Context;
-
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.mvvm_test_application.model.CocktailAdapter;
 import com.example.mvvm_test_application.utils.DownloaderService;
-import com.example.mvvm_test_application.view.CocktailFragment;
-import com.example.mvvm_test_application.view.DrinkTypeFragment;
 import com.example.mvvm_test_application.viewmodel.CocktailViewModel;
 import com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel;
 
@@ -16,8 +13,8 @@ import dagger.Provides;
 
 @Module
 public class ContextAndCallbacksModule {
+    @NonNull
     private FragmentActivity activity;
-    // DrinkTypeViewModel.Callback, CocktailViewModel.Callback, CocktailAdapter.Callback,CocktailFragment.Callback, DownloaderServiceModule.UILoadingCommander
 
     public ContextAndCallbacksModule(FragmentActivity activity){
         this.activity=activity;
@@ -36,11 +33,6 @@ public class ContextAndCallbacksModule {
     @Provides
     public CocktailAdapter.Callback provideCocktailAdapterCallback(){
         return (CocktailAdapter.Callback) activity;
-    }
-
-    @Provides
-    public CocktailFragment.Callback provideFragmentCocktailCallback(){
-        return (CocktailFragment.Callback) activity;
     }
 
     @Provides

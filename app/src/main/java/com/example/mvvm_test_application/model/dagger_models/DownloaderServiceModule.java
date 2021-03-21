@@ -1,6 +1,6 @@
 package com.example.mvvm_test_application.model.dagger_models;
 
-import com.example.mvvm_test_application.utils.DownloaderService;
+import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,12 +11,13 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = RetrofitSingletonModule.class)
+@Singleton
+@Module(includes = RetrofitModule.class)
 public class DownloaderServiceModule {
     //TODO МБ поставить провайдер ретрофита
 
-    @Provides
     @Singleton
+    @Provides
     public ExecutorService provideDownloaderService(){
         return Executors.newCachedThreadPool(new ThreadFactory() {
             @Override

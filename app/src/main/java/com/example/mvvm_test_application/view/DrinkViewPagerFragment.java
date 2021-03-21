@@ -14,6 +14,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentDrinkViewPagerBinding;
+import com.example.mvvm_test_application.model.components.DaggerDrinkViewPagerComponent;
+import com.example.mvvm_test_application.model.dagger_models.BindingModule;
+import com.example.mvvm_test_application.model.dagger_models.ContextAndCallbacksModule;
+import com.example.mvvm_test_application.model.dagger_models.FragmentPagerAdapterModule;
 import com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel;
 
 import javax.inject.Inject;
@@ -23,9 +27,9 @@ public class DrinkViewPagerFragment extends Fragment {
     private static final String KEY_POSITION_TYPE_DRINK = "key_position_type_drink";
 
     @Inject
-    private FragmentDrinkViewPagerBinding binding;
+    FragmentDrinkViewPagerBinding binding;
     @Inject
-    private FragmentPagerAdapter adapter;
+    FragmentPagerAdapter adapter;
 
     public static DrinkViewPagerFragment newInstance(int position){
         DrinkViewPagerFragment drinkViewPagerFragment = new DrinkViewPagerFragment();
@@ -39,6 +43,8 @@ public class DrinkViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_drink_view_pager,container,false);
+        DaggerDrinkViewPagerComponent.builder().bindingModule(new BindingModule(container)).contextAndCallbacksModule(new ContextAndCallbacksModule(getActivity()))
+                .fragmentPagerAdapterModule(new FragmentPagerAdapterModule(getFragmentManager())).build().inject(this);
         setUpViewPager();
         return binding.getRoot();
     }

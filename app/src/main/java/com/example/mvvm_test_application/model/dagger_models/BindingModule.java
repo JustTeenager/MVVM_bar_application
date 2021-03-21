@@ -23,34 +23,40 @@ import dagger.Provides;
 @Module(includes = ContextAndCallbacksModule.class)
 public class BindingModule {
 
-    @Provides
-    public FragmentCocktailBinding provideCocktailBinding(FragmentActivity activity, ViewGroup parent){
-        return DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.fragment_cocktail,parent,false);
+    private ViewGroup viewGroup;
+
+    public BindingModule(ViewGroup viewGroup){
+        this.viewGroup = viewGroup;
     }
 
     @Provides
-    public FragmentCocktailListBinding provideCocktailListBinding(FragmentActivity activity, ViewGroup parent){
-        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_cocktail_list,parent,false);
+    public FragmentCocktailBinding provideCocktailBinding(FragmentActivity activity){
+        return DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.fragment_cocktail,viewGroup,false);
     }
 
     @Provides
-    public FragmentDrinkTypeBinding provideDrinkTypeBindingBinding(FragmentActivity activity, ViewGroup parent){
-        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_drink_type,parent,false);
+    public FragmentCocktailListBinding provideCocktailListBinding(FragmentActivity activity){
+        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_cocktail_list,viewGroup,false);
     }
 
     @Provides
-    public FragmentDrinkViewPagerBinding provideDrinkViewPagerBinding(FragmentActivity activity, ViewGroup parent){
-        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_drink_view_pager,parent,false);
+    public FragmentDrinkTypeBinding provideDrinkTypeBindingBinding(FragmentActivity activity){
+        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_drink_type,viewGroup,false);
     }
 
     @Provides
-    public ItemCocktailBinding provideItemCocktailBinding(FragmentActivity activity, ViewGroup parent){
-        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.item_cocktail,parent,false);
+    public FragmentDrinkViewPagerBinding provideDrinkViewPagerBinding(FragmentActivity activity){
+        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_drink_view_pager,viewGroup,false);
     }
 
     @Provides
-    public FragmentCocktailWebViewBinding provideWebViewBinding(FragmentActivity activity, ViewGroup parent){
-        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_cocktail_web_view,parent,false);
+    public ItemCocktailBinding provideItemCocktailBinding(FragmentActivity activity){
+        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.item_cocktail,viewGroup,false);
+    }
+
+    @Provides
+    public FragmentCocktailWebViewBinding provideWebViewBinding(FragmentActivity activity){
+        return DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.fragment_cocktail_web_view,viewGroup,false);
     }
 
 }

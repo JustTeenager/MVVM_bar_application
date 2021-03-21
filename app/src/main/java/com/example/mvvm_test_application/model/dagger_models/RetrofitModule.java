@@ -7,10 +7,12 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+@Singleton
 @Module
-public class RetrofitSingletonModule {
-    @Provides
+public class RetrofitModule {
+
     @Singleton
+    @Provides
     public RetrofitSingleton provideRetrofitSingleton(){
         return RetrofitSingleton.newInstance();
     }

@@ -1,12 +1,19 @@
 package com.example.mvvm_test_application.model;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mvvm_test_application.databinding.ItemCocktailBinding;
+import com.example.mvvm_test_application.model.components.DaggerCocktailAdapterComponent;
+import com.example.mvvm_test_application.model.components.DaggerCocktailHolderComponent;
+import com.example.mvvm_test_application.model.dagger_models.BindingModule;
+import com.example.mvvm_test_application.model.dagger_models.ContextAndCallbacksModule;
+import com.example.mvvm_test_application.model.dagger_models.ViewModelsModule;
 import com.example.mvvm_test_application.viewmodel.CocktailItemViewModel;
 import com.example.mvvm_test_application.viewmodel.CocktailDataViewModel;
 
@@ -17,9 +24,9 @@ import javax.inject.Inject;
 public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.CocktailHolder> {
     private List<Cocktail> cocktails;
     @Inject
-    private  ItemCocktailBinding bindable;
+    ItemCocktailBinding bindable;
     @Inject
-    private Callback callback;
+    Callback callback;
 
     public CocktailAdapter(List<Cocktail> cocktails){
         this.cocktails = cocktails;
@@ -28,6 +35,10 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.Cockta
     @NonNull
     @Override
     public CocktailHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        DaggerCocktailAdapterComponent.builder().bindingModule(new BindingModule(parent))
+                .contextAndCallbacksModule(new ContextAndCallbacksModule((FragmentActivity) parent.getContext()))
+                .build().inject(this);
+        Log.d("tut", String.valueOf(bindable == null));
        // =DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.item_cocktail,parent,false);
         return new CocktailHolder(bindable);
     }
@@ -47,12 +58,15 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.Cockta
         private ItemCocktailBinding binding;
         private Cocktail cocktail;
         @Inject
-        private CocktailItemViewModel model;
+        CocktailItemViewModel model;
         @Inject
-        private CocktailDataViewModel controller;
+        CocktailDataViewModel controller;
 
         public CocktailHolder(ItemCocktailBinding binding) {
             super(binding.getRoot());
+            //Log.d("tut_holder", binding.getActivity().toString());
+            DaggerCocktailHolderComponent.builder().contextAndCallbacksModule(new ContextAndCallbacksModule((FragmentActivity) binding.getRoot().getContext()))
+                    .build().inject(this);
             this.binding =binding;
             this.binding.setViewModel(model);
             binding.itemClick.setOnClickListener(this);

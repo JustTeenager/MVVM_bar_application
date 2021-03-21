@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.example.mvvm_test_application.model.Cocktail;
+import com.example.mvvm_test_application.model.components.DaggerDownloaderServiceComponent;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +27,9 @@ import javax.inject.Inject;
 public class DownloaderService extends Service {
 
     @Inject
-     private  ExecutorService mService;
+    ExecutorService serviceThread;
     @Inject
-     private RetrofitSingleton retrofitSingleton;
+    RetrofitSingleton retrofitSingleton;
 
     public class DownloadBinder extends Binder{
         private final DownloaderService service;
@@ -38,6 +42,7 @@ public class DownloaderService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        DaggerDownloaderServiceComponent.builder().build().inject(this);
     }
 
     public interface UILoadingCommander {
@@ -46,14 +51,11 @@ public class DownloaderService extends Service {
         void failDownloading();
     }
 
-    public interface ImageGetting{
-        void getImage(Drawable drawable);
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mService.shutdown();
+        serviceThread.shutdown();
     }
 
     @Nullable
@@ -67,7 +69,7 @@ public class DownloaderService extends Service {
             @Override
             public void run() {
                 commander.showDialog();
-                Future<List<Cocktail>> future=mService.submit(new Callable<List<Cocktail>>() {
+                Future<List<Cocktail>> future= serviceThread.submit(new Callable<List<Cocktail>>() {
                     @Override
                     public List<Cocktail> call() {
                         try {
@@ -76,7 +78,7 @@ public class DownloaderService extends Service {
                             return list;
                         } catch (IOException e) {
                             e.printStackTrace();
-                            commander.failDownloading();
+                           commander.failDownloading();
                         }
                         return new ArrayList<>();
                     }
@@ -91,25 +93,4 @@ public class DownloaderService extends Service {
         }).start();
     }
 
-    public void downloadImage(final String url, final UILoadingCommander commander, final ImageGetting getting) throws InterruptedException {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                commander.showDialog();
-                Future<Drawable> future = mService.submit(new Callable<Drawable>() {
-                    @Override
-                    public Drawable call() throws Exception {
-                        return Glide.with(getBaseContext()).asDrawable().load(url).submit().get();
-                    }
-                });
-                try {
-                    getting.getImage(future.get());
-                    commander.dismissDialog();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                    commander.failDownloading();
-                }
-            }
-        }).start();
-    }
 }

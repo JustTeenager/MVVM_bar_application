@@ -1,6 +1,7 @@
 package com.example.mvvm_test_application.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.databinding.FragmentCocktailListBinding;
 import com.example.mvvm_test_application.model.CocktailAdapter;
+import com.example.mvvm_test_application.model.components.DaggerCocktailListComponent;
+import com.example.mvvm_test_application.model.dagger_models.BindingModule;
+import com.example.mvvm_test_application.model.dagger_models.CocktailAdapterModule;
+import com.example.mvvm_test_application.model.dagger_models.ContextAndCallbacksModule;
 import com.example.mvvm_test_application.utils.RetrofitSingleton;
 
 import javax.inject.Inject;
@@ -23,9 +28,9 @@ public class CocktailListFragment extends Fragment {
 
     private static final String KEY_POSITION_TYPE_DRINK = "key_position_type_drink";
     @Inject
-    private FragmentCocktailListBinding binding;
+    FragmentCocktailListBinding binding;
     @Inject
-    private CocktailAdapter adapter;
+    CocktailAdapter adapter;
 
     public static CocktailListFragment newInstance(int position) {
         CocktailListFragment fragment = new CocktailListFragment();
@@ -38,7 +43,11 @@ public class CocktailListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_list, container, false);
+        DaggerCocktailListComponent.builder().bindingModule(new BindingModule(container)).contextAndCallbacksModule(new ContextAndCallbacksModule(getActivity()))
+                .cocktailAdapterModule(new CocktailAdapterModule(getArguments().getInt(KEY_POSITION_TYPE_DRINK)))
+                .build().inject(this);
+        Log.d("tut_holder", getActivity().toString());
+        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_list, container, false);
         //position = getArguments().getInt(KEY_POSITION_TYPE_DRINK);
         generateAndSetupCocktailAdapter();
         return binding.getRoot();

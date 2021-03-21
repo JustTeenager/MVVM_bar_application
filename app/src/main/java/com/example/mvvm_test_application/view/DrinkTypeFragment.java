@@ -9,6 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.mvvm_test_application.databinding.FragmentDrinkTypeBinding;
+import com.example.mvvm_test_application.model.components.DaggerDrinkTypeComponent;
+import com.example.mvvm_test_application.model.dagger_models.BindingModule;
+import com.example.mvvm_test_application.model.dagger_models.ContextAndCallbacksModule;
+import com.example.mvvm_test_application.model.dagger_models.ViewModelsModule;
 import com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel;
 
 import javax.inject.Inject;
@@ -25,14 +29,16 @@ public class DrinkTypeFragment extends Fragment {
     }
 
     @Inject
-    private DrinkTypeViewModel model;
+    DrinkTypeViewModel model;
     @Inject
-    private FragmentDrinkTypeBinding binding;
+    FragmentDrinkTypeBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //final FragmentDrinkTypeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_drink_type,container,false);
+        DaggerDrinkTypeComponent.builder().bindingModule(new BindingModule(container)).contextAndCallbacksModule(new ContextAndCallbacksModule(getActivity()))
+                .build().inject(this);
         binding.setViewModel(model);
         return binding.getRoot();
     }

@@ -12,16 +12,20 @@ import java.util.List;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = ContextAndCallbacksModule.class)
+@Module(includes = {ContextAndCallbacksModule.class})
 public class CocktailAdapterModule {
 
-    private List<Cocktail> cocktails;
     private CocktailAdapter.Callback callback;
+    private int position;
+
+
+    public CocktailAdapterModule(int position){
+        this.position = position;
+    }
 
     @Provides
-    public CocktailAdapter CocktailAdapterModule(List<Cocktail> cocktails,int position,CocktailAdapter.Callback callback){
+    public CocktailAdapter provideCocktailAdapter(CocktailAdapter.Callback callback){
         //this.activity = activity;
-        this.cocktails = cocktails;
         this.callback = callback;
         if (position == 0) {
             return new CocktailAdapter(RetrofitSingleton.getCocktailsFilteredList("Виски"));

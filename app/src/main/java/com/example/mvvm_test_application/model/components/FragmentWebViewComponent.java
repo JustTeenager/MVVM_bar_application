@@ -1,12 +1,12 @@
 package com.example.mvvm_test_application.model.components;
 
 import com.example.mvvm_test_application.model.dagger_models.BindingModule;
-import com.example.mvvm_test_application.view.CocktailFragment;
+import com.example.mvvm_test_application.view.CocktailWebViewFragment;
 
 import dagger.Component;
 
 @Component(modules = BindingModule.class)
-public interface CocktailFragmentComponent {
+public interface FragmentWebViewComponent {
 
-    void inject(CocktailFragment fragment);
+    void inject(CocktailWebViewFragment cocktailWebViewFragment);
 }

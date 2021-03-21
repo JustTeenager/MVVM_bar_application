@@ -2,39 +2,44 @@ package com.example.mvvm_test_application.view;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mvvm_test_application.R;
 import com.example.mvvm_test_application.model.CocktailAdapter;
+import com.example.mvvm_test_application.model.components.DaggerMainActivityComponent;
+import com.example.mvvm_test_application.model.dagger_models.ContextAndCallbacksModule;
+import com.example.mvvm_test_application.model.dagger_models.MainActivityModule;
 import com.example.mvvm_test_application.utils.DownloaderService;
 import com.example.mvvm_test_application.viewmodel.CocktailViewModel;
 import com.example.mvvm_test_application.viewmodel.DrinkTypeViewModel;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements DrinkTypeViewModel.Callback, CocktailViewModel.Callback, CocktailAdapter.Callback,CocktailFragment.Callback, DownloaderService.UILoadingCommander {
+public class MainActivity extends AppCompatActivity implements DrinkTypeViewModel.Callback, CocktailViewModel.Callback, CocktailAdapter.Callback, DownloaderService.UILoadingCommander {
 
 
     @Inject
-    private DownloaderService downloaderService;
+    DownloaderService downloaderService;
     @Inject
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
     @Inject
-    private ServiceConnection connection;
+    ServiceConnection connection;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DaggerMainActivityComponent.builder().contextAndCallbacksModule(new ContextAndCallbacksModule(this))
+                .mainActivityModule(new MainActivityModule())
+                .build().inject(this);
         setContentView(R.layout.activity_fragment);
         bindService(new Intent(this,DownloaderService.class),connection,BIND_AUTO_CREATE);
     }
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements DrinkTypeViewMode
 
     @Override
     public void openWebSite(String url) {
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CocktailWebView.newInstance(url))
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CocktailWebViewFragment.newInstance(url))
                 .addToBackStack(null).commit();
     }
 
@@ -87,11 +92,6 @@ public class MainActivity extends AppCompatActivity implements DrinkTypeViewMode
         }
     });
 
-    }
-
-    @Override
-    public DownloaderService getDownloaderService() {
-        return downloaderService;
     }
 
     @Override
